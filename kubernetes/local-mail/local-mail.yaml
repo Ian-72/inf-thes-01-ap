@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: inbucket
+  labels:
+    name: local-mail
+spec:
+  template:
+    metadata:
+      labels:
+        app: local-mail
+    spec:
+      containers:
+        - name: inbucket-mail
+          image: inbucket/inbucket
+          ports:
+            - containerPort: 9000
+              name: port-1
+            - containerPort: 2500
+              name: port-2
+            - containerPort: 1100
+              name: port-3

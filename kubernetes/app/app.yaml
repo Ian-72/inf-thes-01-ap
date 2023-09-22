@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: documenso-app
+  labels:
+    name: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: documenso-app
+  template:
+    metadata:
+      labels:
+        app: documenso-app
+    spec:
+      # wait for postgres-service to run first
+      initContainers:
+      - name: init-wait-for-db
+        image: alpine
+        command: ["/bin/sh", "-c", "for i in $(seq 1 300); do nc -zvw1 postgres-service 5432 && exit 0 || sleep 3; done; exit 1"]
+      containers:
+        - name: documenso-container
+          image: documenso-container:v1
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+              name: app-cfg

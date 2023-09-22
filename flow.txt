@@ -1,0 +1,33 @@
+1. Where do you run this script?
+    --> local ? cloud
+        based on env you can crete flow :
+            deployment :
+            prepare to setup and storage bucket
+            prepare to setup email service
+            prepare to setup cloud monitoring
+            prepare to setup database service
+
+            Load testing :
+            prepare to setup automation test script
+2. Dependency integration
+3. Running from beggining?
+    if not running from beggining would you like to clean the database and cloud storage?
+4. create a user
+5. Print info
+6. Setup to running automation?
+    if yes print info and delay from 1 minute then auto create automation
+
+INFRA FLOW :
+Flow to create workflow in kubernetes :
+1. Create cluster 
+2. Create deployment
+3. Create service 
+4. Expose service
+
+Flow to create workflow gcs bucket :
+1. Create bucket
+2. Integrate to kubernetes
+
+Flow to Integrate cloud monitoring :
+1. Create cloud monitoring
+2. Integrate to kubernetes

@@ -1,0 +1,12 @@
+# Service for the NGINX reverse proxy
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: documenso-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

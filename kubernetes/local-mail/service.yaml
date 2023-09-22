@@ -1,0 +1,19 @@
+# Service for the NGINX reverse proxy
+apiVersion: v1
+kind: Service
+metadata:
+  name: mail-service
+spec:
+  selector:
+    app: local-mail
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+    - protocol: TCP
+      port: 2500
+      targetPort: 2500
+    - protocol: TCP
+      port: 1100
+      targetPort: 1100
+  type: NodePort
