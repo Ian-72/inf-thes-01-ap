@@ -3,10 +3,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: app-service
+  labels: 
+    name: dev-thesis-app
 spec:
+  type: ClusterIP
   selector:
     app: documenso-app
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 3000

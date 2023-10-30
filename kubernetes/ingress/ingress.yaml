@@ -4,11 +4,12 @@ metadata:
   name: my-app-ingress
   annotations:
     kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: "documenso-public-ip"
 spec:
   rules:
   - http:
       paths:
-      - path: /*
+      - path: "/*"
         backend:
           serviceName: app-service
           servicePort: 80

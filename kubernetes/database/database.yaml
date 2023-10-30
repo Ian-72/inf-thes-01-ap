@@ -2,9 +2,11 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: database
+  namespace: thesis
+  labels: 
+    name: dev-thesis-db
 spec:
-  serviceName: db-stateful
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: db
@@ -19,16 +21,12 @@ spec:
           ports:
             - containerPort: 5432
           envFrom:
-            - configMapRef:
-              name: postgres-cfg
+            - secretRef:
+              name: postgres-sec
           volumeMounts:
-            - name: postgres-data-claim
+            - name: db-storage
               mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgres-data-claim
-      spec:
-        accessModes: [ "ReadWriteMany" ]
-        resources:
-          requests:
-            storage: 5Gi
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: db-storage-claim
