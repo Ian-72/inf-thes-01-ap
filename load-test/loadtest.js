@@ -12,7 +12,7 @@ export let options = {
 };
 
 export default function () {
-    const URI = 'http://34.120.205.86/api/users'
+    const URI = 'http:///api/users'
 
     const payload = JSON.stringify({
         email: 'testing@gmail.com',
