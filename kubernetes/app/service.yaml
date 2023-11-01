@@ -1,15 +1,14 @@
-# Service for the NGINX reverse proxy
 apiVersion: v1
 kind: Service
 metadata:
   name: app-service
   labels: 
     name: dev-thesis-app
+  namespace: thesis
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
-    app: documenso-app
+    app: documenso-deployment
   ports:
-    - protocol: TCP
-      port: 80
+    - port: 80
       targetPort: 3000

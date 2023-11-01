@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: database
+  name: postgres-statefulset
   namespace: thesis
-  labels: 
+  labels:
     name: dev-thesis-db
 spec:
-  replicas: 1
+  serviceName: db-service
   selector:
     matchLabels:
-      app: db
+      app: postgres-statefulset
   template:
     metadata:
       labels:
-        app: db
+        app: postgres-statefulset
     spec:
       containers:
         - name: postgres-container
@@ -22,7 +22,29 @@ spec:
             - containerPort: 5432
           envFrom:
             - secretRef:
-              name: postgres-sec
+                name: database-env-sec
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - -ec
+                - 'PGPASSWORD=$POSTGRES_PASSWORD psql -w -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -h 127.0.0.1 -c "SELECT 1"'
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - -ec
+                - 'PGPASSWORD=$POSTGRES_PASSWORD psql -w -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -h 127.0.0.1 -c "SELECT 1"'
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
           volumeMounts:
             - name: db-storage
               mountPath: /var/lib/postgresql/data

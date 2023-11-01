@@ -1,49 +1,65 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: documenso-app
+  name: documenso-deployment
   namespace: thesis
   labels:
     name: dev-thesis-app
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: documenso-app
+      app: documenso-deployment
   template:
     metadata:
       labels:
-        app: documenso-app
+        app: documenso-deployment
     spec:
-      # wait for postgres-service to run first
       initContainers:
+      # wait for db-service to run first
       - name: init-wait-for-db
         image: alpine
-        command: ["/bin/sh", "-c", "for i in $(seq 1 300); do nc -zvw1 postgres-service 5432 && exit 0 || sleep 3; done; exit 1"]
+        env:
+        - name: DBHOST
+          valueFrom:
+            secretKeyRef:
+              key: DBHOST
+              name: app-env-sec
+        command: ["/bin/sh", "-c", "for i in $(seq 1 300); do nc -zvw1 $DBHOST 5432 && exit 0 || sleep 3; done; exit 1"]
+      # run migration
       - name: db-migration
-        image: busybox:1.28
-        command: ['sh', '-c', "until nslookup mydb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+        image: ragil88/documenso-migration:latest
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              key: DATABASE_URL
+              name: app-env-sec
       containers:
         - name: documenso-container
-          image: documenso-container:v1
+          image: ragil88/documenso-app:test-with-hpa
           ports:
             - containerPort: 3000
           envFrom:
             - secretRef:
-              name: app-sec
+                name: app-env-sec
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "700m"
+              memory: "1024Mi"
           livenessProbe:
             httpGet:
-              path: "/health"
+              scheme: HTTP
+              path: /api/health
               port: 3000
-            initialDelaySeconds: 90
+            initialDelaySeconds: 5
             periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 5
           readinessProbe:
             httpGet:
-              path: "/health"
+              scheme: HTTP
+              path: /api/health
               port: 3000
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 5

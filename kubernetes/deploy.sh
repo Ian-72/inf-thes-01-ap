@@ -1,3 +1,5 @@
+#!/bin/sh
+
 gcloud beta container --project "rich-aspect-403310" clusters create "documenso-deployment" \
     --zone "us-central1-a" \
     --machine-type "n1-standard-2" \
@@ -23,7 +25,7 @@ gcloud compute disks create gke-pv-disk \
     --size=50GB \
     --zone=us-central1-a
 
-gcloud compute addresses create documenso-public-ip --project=rich-aspect-403310 --region=us-central1
+gcloud compute addresses create documenso-public-ip --project=rich-aspect-403310 --global
 
 # Apply namespace
 kubectl apply -f namespace.yaml
@@ -31,21 +33,19 @@ kubectl apply -f namespace.yaml
 # Create volume
 kubectl apply -f pv.yaml
 
-# Create Ingress
-kubectl apply -f ingress/ingress.yaml
-
-# Create service app and database
-kubectl apply -f app/service.yaml
-kubectl apply -f database/service.yaml
-
 # Create secret management
 kubectl apply -f secret.yaml
 
-# Create database statefulset workload
+# Create database statefulset and db-service
 kubectl apply -f database/database.yaml
+kubectl apply -f database/service.yaml
 
-# Create documenso statefulset workload
+# Create documenso deployment and app-service
 kubectl apply -f app/app.yaml
+kubectl apply -f app/service.yaml
+
+# Create Ingress
+kubectl apply -f ingress/ingress.yaml
 
 # Enable high availability pod auto scaling
 kubectl apply -f app/hpa.yaml

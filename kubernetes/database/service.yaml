@@ -2,12 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: db-service
-  labels: 
+  labels:
     name: dev-thesis-db
+  namespace: thesis
 spec:
   type: ClusterIP
   selector:
-    app: database
+    app: postgres-statefulset
   ports:
   - port: 5432
-    name: postgres_port
+    name: postgres-port
