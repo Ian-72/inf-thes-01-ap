@@ -1,16 +1,14 @@
 #!/bin/sh
 
-namespace="skripsi"
+namespace="thesis"
 
-declare -a kubeWorkflow=("deployment my-app"
-                         "statefulset db"
+declare -a kubeWorkflow=("deployment documenso-deployment"
+                         "statefulset postgres-statefulset"
                          "service app-service db-service"
-                         "pvc db-pvc"
-                         "pv db-pv"
+                         "pvc db-storage-claim"
+                         "pv PersistentVolume"
+                         "hpa hpa-app"
                          "ingress app-ingress")
-
-declare -a gcloudWorkflow=("disk delete persistant-disk-documenso"
-                           "cluster delete documenso-deployment")
 
 # Terminate Kubernetes resource
 echo -e "Deleting Kubernetes Workflow"
@@ -22,8 +20,6 @@ kubectl delete namespace $namespace
 
 # Terminate Google Cloud resource
 echo -e "Deleting Google Cloud Resource"
-gcloud compute addresses delete static-documenso-deployment  --global
-for i in "${gcloudWorkflow}"
-do
-    gcloud compute $gcloudWorkflow --zone=us-east1-a
-done
+gcloud compute addresses delete documenso-public-ip  --global
+gcloud compute disks delete gke-pv-disk  --zone=us-central1-a
+gcloud compute cluster delete documenso-deployment --zone=us-central1-a
