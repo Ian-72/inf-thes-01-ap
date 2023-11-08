@@ -14,8 +14,8 @@ kubectl apply -f database/database.yaml
 kubectl apply -f database/service.yaml
 
 # Create documenso deployment and app-service
-kubectl apply -f app/app.yaml
 kubectl apply -f app/service.yaml
+kubectl apply -f app/app.yaml
 
 # Create Ingress
 kubectl apply -f ingress/ingress.yaml

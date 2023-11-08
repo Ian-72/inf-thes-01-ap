@@ -19,12 +19,12 @@ spec:
       - name: init-wait-for-db
         image: alpine
         env:
-        - name: DBHOST
+        - name: DB_HOST
           valueFrom:
             secretKeyRef:
-              key: DBHOST
+              key: DB_HOST
               name: app-env-sec
-        command: ["/bin/sh", "-c", "for i in $(seq 1 300); do nc -zvw1 $DBHOST 5432 && exit 0 || sleep 3; done; exit 1"]
+        command: ["/bin/sh", "-c", "for i in $(seq 1 300); do nc -zvw1 $DB_HOST 5432 && exit 0 || sleep 3; done; exit 1"]
       # run migration
       - name: db-migration
         image: ragil88/documenso-migration:latest
@@ -54,8 +54,8 @@ spec:
               scheme: HTTP
               path: /api/health
               port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            initialDelaySeconds: 10
+            periodSeconds: 5
           readinessProbe:
             httpGet:
               scheme: HTTP
