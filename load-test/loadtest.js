@@ -5,11 +5,11 @@ import { sleep, check } from "k6";
 
 export let options = {
     stages: [
-        { duration: '40s', target: 1000 }, // run 0 - 1000 VUs for 3 minute
-        { duration: '30s', target: 1000 }, // stay 1000 VUs for 2 minute
-        { duration: '20s', target: 1500 }, // run 1000 - 1500 VUs for 3 minute
-        { duration: '20s', target: 2000 }, // run 1500 - 2000 VUs for 5 minute
-        { duration: '1m', target: 0 }     // decrease VUs until 0 for 2 minute
+        { duration: '40s', target: 1000 }, // simulate ramp-up of traffic from 1 to 1000 virtual users over 40 seconds.
+        { duration: '30s', target: 1000 }, // stay at 1000 virtual users for 30 seconds
+        { duration: '20s', target: 1500 }, // ramp-up of traffic from 1000 to 1500 virtual users over 20 seconds.
+        { duration: '20s', target: 2000 }, // ramp-up of traffic from 1500 to 2000 virtual users over 20 seconds.
+        { duration: '1m', target: 0 }      // ramp-down to 0 users over 1 minutes
     ]
 };
 
