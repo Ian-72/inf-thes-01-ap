@@ -5,11 +5,11 @@ import { sleep, check } from "k6";
 
 export let options = {
     stages: [
-        { duration: '0.6m', target: 1000 }, // run 0 - 1000 VUs for 3 minute
-        { duration: '0.7m', target: 1000 }, // stay 1000 VUs for 2 minute
-        { duration: '0.10m', target: 1500 }, // run 1000 - 1500 VUs for 3 minute
-        { duration: '0.12m', target: 2000 }, // run 1500 - 2000 VUs for 5 minute
-        { duration: '0.5m', target: 0 }     // decrease VUs until 0 for 2 minute
+        { duration: '40s', target: 1000 }, // run 0 - 1000 VUs for 3 minute
+        { duration: '30s', target: 1000 }, // stay 1000 VUs for 2 minute
+        { duration: '20s', target: 1500 }, // run 1000 - 1500 VUs for 3 minute
+        { duration: '20s', target: 2000 }, // run 1500 - 2000 VUs for 5 minute
+        { duration: '1m', target: 0 }     // decrease VUs until 0 for 2 minute
     ]
 };
 
