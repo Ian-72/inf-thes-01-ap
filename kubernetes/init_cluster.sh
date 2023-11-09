@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Create kubernetes cluster
-gcloud beta container --project "rich-aspect-403310" clusters create "documenso-deployment" \
+gcloud beta container --project "rich-aspect-403310" clusters create "documenso-gke-deployment" \
     --machine-type "n1-standard-2" \
     --image-type "UBUNTU_CONTAINERD" \
     --disk-type "pd-standard" \
