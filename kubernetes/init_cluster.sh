@@ -2,14 +2,13 @@
 
 # Create kubernetes cluster
 gcloud beta container --project "rich-aspect-403310" clusters create "documenso-deployment" \
-    --zone "us-central1-a" \
     --machine-type "n1-standard-2" \
     --image-type "UBUNTU_CONTAINERD" \
     --disk-type "pd-standard" \
     --disk-size "30" \
     --num-nodes "2" \
-    --node-locations "asia-southeast1-a" \
     --zone "asia-southeast1-a" \
+    --node-locations "asia-southeast1-a" \
     --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
     --logging=SYSTEM,WORKLOAD \
     --monitoring=SYSTEM,STORAGE,POD,DEPLOYMENT,STATEFULSET,HPA \
