@@ -9,12 +9,13 @@ gcloud beta container --project "rich-aspect-403310" clusters create "documenso-
     --disk-size "30" \
     --num-nodes "2" \
     --node-locations "asia-southeast1-a" \
+    --zone "asia-southeast1-a" \
     --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
     --logging=SYSTEM,WORKLOAD \
     --monitoring=SYSTEM,STORAGE,POD,DEPLOYMENT,STATEFULSET,HPA \
     --enable-ip-alias \
     --network "projects/rich-aspect-403310/global/networks/default" \
-    --subnetwork "projects/rich-aspect-403310/regions/us-central1/subnetworks/default" \
+    --subnetwork "projects/rich-aspect-403310/regions/asia-southeast1/subnetworks/default" \
     --no-enable-intra-node-visibility \
     --default-max-pods-per-node "110" \
     --no-enable-master-authorized-networks \
