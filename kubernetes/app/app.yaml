@@ -27,7 +27,7 @@ spec:
         command: ["/bin/sh", "-c", "for i in $(seq 1 300); do nc -zvw1 $DB_HOST 5432 && exit 0 || sleep 3; done; exit 1"]
       # run migration
       - name: db-migration
-        image: ragil88/documenso-migration:latest
+        image: ragil88/documenso-migration:v1.0
         env:
         - name: DATABASE_URL
           valueFrom:
@@ -36,7 +36,7 @@ spec:
               name: app-env-sec
       containers:
         - name: documenso-container
-          image: ragil88/documenso-app:test-with-hpa
+          image: ragil88/documenso-app:v1.0
           ports:
             - containerPort: 3000
           envFrom:
@@ -55,11 +55,11 @@ spec:
               path: /api/health
               port: 3000
             initialDelaySeconds: 10
-            periodSeconds: 5
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               scheme: HTTP
               path: /api/health
               port: 3000
             initialDelaySeconds: 10
-            periodSeconds: 5
+            periodSeconds: 15

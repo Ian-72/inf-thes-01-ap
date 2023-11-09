@@ -1,28 +1,29 @@
 import http from "k6/http";
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
+import { textSummary } from "https://jslib.k6.io/k6-summary/0.0.1/index.js";
 import { sleep, check } from "k6";
 
 export let options = {
     stages: [
-        { duration: '3m', target: 1000 }, // run 0 - 1000 VUs for 3 minute
-        { duration: '2m', target: 1000 }, // stay 100 VUs for 2 minute
-        { duration: '3m', target: 1500 }, // run 1000 - 1500 VUs for 3 minute
-        { duration: '5m', target: 2000 }, // run 1500 - 2000 VUs for 5 minute
-        { duration: '2m', target: 0 }     // decrease VUs until 0 for 2 minute
+        { duration: '0.6m', target: 1000 }, // run 0 - 1000 VUs for 3 minute
+        { duration: '0.7m', target: 1000 }, // stay 1000 VUs for 2 minute
+        { duration: '0.10m', target: 1500 }, // run 1000 - 1500 VUs for 3 minute
+        { duration: '0.12m', target: 2000 }, // run 1500 - 2000 VUs for 5 minute
+        { duration: '0.5m', target: 0 }     // decrease VUs until 0 for 2 minute
     ]
 };
 
 export default function () {
-    const URI = 'http:///api/users'
+    const URI = ''
 
     const payload = JSON.stringify({
-        email: 'testing@gmail.com',
-        name: 'GenerateByLoadTest2'
+        email: '',
+        name: ''
     })
     
     const header = {
         'Content-Type': 'application/json',
         'Cookie': '',
-        'Connection': 'keep-alive'
     }
 
     const res = http.patch(URI, payload, { headers: header })
@@ -33,4 +34,12 @@ export default function () {
     })
 
     sleep(1)
+}
+
+// report result to html
+export function handleSummary(data) {
+    return {
+        "result.html": htmlReport(data),
+        stdout: textSummary(data, { indent: " ", enableColors: true }),
+    };
 }

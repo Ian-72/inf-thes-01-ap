@@ -8,7 +8,7 @@ gcloud beta container --project "rich-aspect-403310" clusters create "documenso-
     --disk-type "pd-standard" \
     --disk-size "30" \
     --num-nodes "2" \
-    --node-locations "us-central1-a" \
+    --node-locations "asia-southeast1-a" \
     --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
     --logging=SYSTEM,WORKLOAD \
     --monitoring=SYSTEM,STORAGE,POD,DEPLOYMENT,STATEFULSET,HPA \
@@ -25,7 +25,7 @@ gcloud compute disks create gke-pv-disk \
     --project=rich-aspect-403310 \
     --type=pd-standard \
     --size=50GB \
-    --zone=us-central1-a
+    --zone=asia-southeast1-a
 
 # Reservate static public ip
 gcloud compute addresses create documenso-public-ip --project=rich-aspect-403310 --global
